@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
 
 public class TreasureChest extends ApplicationAdapter implements GestureDetector.GestureListener {
@@ -22,8 +24,9 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 	CameraInputController cameraController;
 	AssetManager assets;
 	Array<ModelInstance> instances = new Array<ModelInstance>();
+	Box chest;
 	Environment environment;
-	AnimationController controller;
+	// AnimationController controller;
 	boolean loading;
 
 	@Override
@@ -34,7 +37,8 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 		environment.add(new DirectionalLight().set(0.8f, 0.8f,0.8f, -1f, -0.8f, -0.2f));
 
 		camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		camera.position.set(1f, 1f, 1f);
+		camera.position.set(0f, 3f, 0f);
+		camera.rotate(90f, 0f, 1f, 0f);
 		camera.lookAt(0,0,0);
 		camera.near = 1f;
 		camera.far = 300f;
@@ -49,24 +53,21 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 		assets.load("Chest.g3db", Model.class);
 		//assets.load("core/assets/Brush.g3db", Model.class);
 
-		controller = new AnimationController(null);
+		// controller = new AnimationController(null);
 
 		loading = true;
 	}
 
 	private void doneLoading() {
-
 		Model box = assets.get("Chest.g3db", Model.class);
-		ModelInstance boxInstance = new ModelInstance(box);
-		boxInstance.transform.scale(0.2f, 0.2f, 0.2f);
+		chest = new Box(box);
+		chest.transform.scale(0.2f, 0.2f, 0.2f);
 
+		//controller = new AnimationController(boxInstance);
+		//controller.setAnimation("openBox");
+		//chest.openBox();
 
-
-		controller = new AnimationController(boxInstance);
-		controller.setAnimation("openBox");
-
-		instances.add(boxInstance);
-
+		instances.add(chest);
 
 		/*
 		Model brush = assets.get("/core/assets/Brush.g3db", Model.class);
@@ -87,12 +88,15 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 		}
 		cameraController.update();
 
-
+		/*
 		if (controller.current != null) {
 			controller.update(Gdx.graphics.getDeltaTime());
 		}
 
-
+		 */
+		if (chest != null) {
+			chest.update(Gdx.graphics.getDeltaTime());
+		}
 
 		Gdx.gl.glViewport(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
@@ -105,6 +109,7 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 	@Override
 	public void dispose () {
 		modelBatch.dispose();
+		chest.dispose();
 		instances.clear();
 		assets.dispose();
 	}
@@ -117,6 +122,26 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
 		System.out.println(x + " " + y + " " + button);
+		Vector3 position = new Vector3();
+
+		Ray ray = camera.getPickRay(x, y);
+		System.out.println(ray);
+		float dis = chest.intersects(chest.transform, ray);
+		if(dis >= 0f) {
+			System.out.println("True");
+		} else {
+			System.out.println("False");
+		}
+
+		//System.out.println(chest.contains(ray));
+
+		/*
+		if (chest.contains(x, y)) {
+			System.out.println("Touch detected");
+			chest.openBox();
+		}
+
+		 */
 		return false;
 	}
 
