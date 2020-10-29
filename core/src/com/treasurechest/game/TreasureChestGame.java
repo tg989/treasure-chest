@@ -19,7 +19,7 @@ public class TreasureChestGame extends Game {
 
 
 	 //list the assets we will use most frequently here, these assets will only be disposed at exit,
-	 //LoadingScreen will load them.
+	 //LoadingScreen will load them.f
 	 //
 	private void initAssets() {
 		assets = new AssetManager();
