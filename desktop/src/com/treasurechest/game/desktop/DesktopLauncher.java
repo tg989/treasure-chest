@@ -7,10 +7,10 @@ import com.treasurechest.game.TreasureChest;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		//Graphics.DisplayMode displayMode = LwjglApplicationConfiguration.getDesktopDisplayMode();
+		// Graphics.DisplayMode displayMode = LwjglApplicationConfiguration.getDesktopDisplayMode();
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Treasure Chest";
-		//config.setFromDisplayMode(displayMode);
+		// config.setFromDisplayMode(displayMode);
 
 		config.width = 1440;
 		config.height = 900;

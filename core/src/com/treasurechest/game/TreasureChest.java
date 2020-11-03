@@ -1,5 +1,5 @@
 package com.treasurechest.game;
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
@@ -18,19 +17,24 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
 
-public class TreasureChest extends ApplicationAdapter implements GestureDetector.GestureListener {
+public class TreasureChest extends Game /* implements GestureDetector.GestureListener */{
+	private Game treasureChest;
 	ModelBatch modelBatch;
 	PerspectiveCamera camera;
 	CameraInputController cameraController;
 	AssetManager assets;
 	Array<ModelInstance> instances = new Array<ModelInstance>();
-	Box chest;
+	//Box chest;
 	Environment environment;
 	// AnimationController controller;
 	boolean loading;
+	private CanvasScreen canvasScreen;
 
 	@Override
 	public void create () {
+
+		this.setScreen(new CanvasScreen(treasureChest));
+		/* MOVE
 		modelBatch = new ModelBatch();
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 1f));
@@ -56,8 +60,11 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 		// controller = new AnimationController(null);
 
 		loading = true;
+
+		*/
 	}
 
+	/*
 	private void doneLoading() {
 		Model box = assets.get("Chest.g3db", Model.class);
 		chest = new Box(box);
@@ -77,12 +84,17 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 		instances.add(brushInstance);
 
 		 */
+	/*
 
 		loading = false;
 	}
+	*/
 
 	@Override
 	public void render () {
+		super.render();
+
+		/* MOVE
 		if (loading && assets.update()) {
 			doneLoading();
 		}
@@ -94,6 +106,7 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 		}
 
 		 */
+		/* MOVE
 		if (chest != null) {
 			chest.update(Gdx.graphics.getDeltaTime());
 		}
@@ -104,16 +117,18 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 		modelBatch.begin(camera);
 		modelBatch.render(instances, environment);
 		modelBatch.end();
+		*/
+
 	}
 
 	@Override
 	public void dispose () {
-		modelBatch.dispose();
-		chest.dispose();
+		// modelBatch.dispose();
+	//	chest.dispose();
 		instances.clear();
 		assets.dispose();
 	}
-
+	/*
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
 		return false;
@@ -122,6 +137,7 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
 		System.out.println(x + " " + y + " " + button);
+		/*
 		Vector3 position = new Vector3();
 
 		Ray ray = camera.getPickRay(x, y);
@@ -133,6 +149,8 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 			System.out.println("False");
 		}
 
+		 */
+
 		//System.out.println(chest.contains(ray));
 
 		/*
@@ -142,6 +160,7 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 		}
 
 		 */
+		/*
 		return false;
 	}
 
@@ -179,4 +198,6 @@ public class TreasureChest extends ApplicationAdapter implements GestureDetector
 	public void pinchStop() {
 
 	}
+
+		 */
 }
